@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,14 +18,14 @@ public class IndexControllerTest {
     private TestRestTemplate restTemplate;
 
 
-    @LocalServerPort
-    private int port;
+//    @LocalServerPort
+//    private int port;
 
     @Test
     public void 메인페이지_로딩() {
         //when
-        String url = "http://localhost:" + port+"/";
-        String body = this.restTemplate.getForObject(url, String.class);
+//        String url = "http://localhost:" + port+"/";
+        String body = this.restTemplate.getForObject("/", String.class);
         System.out.println("body = " + body);
         //then
         //잘못됐음 분명히! 들어가서 body가 나와야하는데 restTemplate 쪽 문제인듯

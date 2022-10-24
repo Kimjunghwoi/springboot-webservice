@@ -1,7 +1,10 @@
 package com.example.springbootwebservice.web.domain.posts;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /*
     보통 ibatis나 MyBatis 등에서 Dao라고 불리는 DB Layer 접근자입니다.
@@ -13,4 +16,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostsRepository extends JpaRepository<Posts, Long> {
+
+    @Query("SELECT p FROM Posts p ORDER BY p.id DESC")
+    List<Posts> findAllDesc();
+
 }
