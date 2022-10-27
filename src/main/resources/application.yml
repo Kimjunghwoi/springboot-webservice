@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    group:
+      real: real,real-db,oauth
   datasource:
     url: jdbc:h2:tcp://localhost/~/oauth
     username: sa
@@ -7,8 +10,6 @@ spring:
   h2:
     console:
       enabled: true
-  profiles:
-    include: oauth,real-db
   session:
     store-type: jdbc
     jdbc:
