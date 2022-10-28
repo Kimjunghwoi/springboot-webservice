@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.5'
 	implementation 'org.springframework.session:spring-session-jdbc'
 	compileOnly 'org.mariadb.jdbc:mariadb-java-client'
+	compileOnly 'mysql:mysql-connector-java'
 	compileOnly 'org.springframework.boot:spring-boot-starter-mustache'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
