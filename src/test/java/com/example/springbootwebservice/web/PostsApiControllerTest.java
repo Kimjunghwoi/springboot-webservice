@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PostsApiControllerTest {
@@ -34,10 +36,9 @@ public class PostsApiControllerTest {
     @LocalServerPort
     private int port;
 
-    /*@Autowired
-    private TestRestTemplate restTemplate;*/
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-    // 추가 MockMvc
     @Autowired
     private PostsRepository postsRepository;
 
@@ -46,7 +47,7 @@ public class PostsApiControllerTest {
 
     private MockMvc mvc;
 
-    @Before // 매번 테스트가 시작되기전에 MockMvc 인스턴스를 생성합니다.
+    @Before
     public void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -74,7 +75,6 @@ public class PostsApiControllerTest {
         String url = "http://localhost:" + port + "/api/v1/posts";
 
         //when
-        // mvc로 수정
         mvc.perform(post(url)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(new ObjectMapper().writeValueAsString(requestDto)))
@@ -112,9 +112,6 @@ public class PostsApiControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(new ObjectMapper().writeValueAsString(requestDto)))
                 .andExpect(status().isOk());
-//        mvc.perform
-//        생성된 MockMvc를 통해 API를 테스트 합니다.
-//        본문(Body) 영역은 문자열로 표현하기 위해 ObjectMapper를 통해 문자열 JSON으로 변환합니다.
 
         //then
         List<Posts> all = postsRepository.findAll();

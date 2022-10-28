@@ -1,5 +1,6 @@
 package com.example.springbootwebservice.web.config.auth;
 
+import com.example.springbootwebservice.web.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

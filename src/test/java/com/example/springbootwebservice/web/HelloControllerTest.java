@@ -1,9 +1,13 @@
 package com.example.springbootwebservice.web;
 
+import com.example.springbootwebservice.web.config.auth.SecurityConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -11,9 +15,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /*
-    @RunWith(SpringRunner.class)
+    @ExtendWith(SpringExtension.class)
         테스트를 진행할 때 JUint에 내장된 실행자 외에 다른 실행자를 실행시킵니다.
-                여기서는 SpringRunner라는 스프링 실행자를 사용합니다.
+                여기서는 SpringExtension라는 스프링 실행자를 사용합니다.
                 즉, 스프링 부트 테스트와 JUnit 사이에 연갈자 역할을 합니다.
     @WebMvcTest
         여러 스프링 테스트 어노테이션 중, Web(Spring MVC)에 집중할 수 있는 어노테이션입니다.
@@ -25,7 +29,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 */
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = HelloController.class)
+@WebMvcTest(controllers = HelloController.class,
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+        }
+)
 public class HelloControllerTest {
 
 /*
@@ -37,6 +45,7 @@ public class HelloControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @WithMockUser(roles="USER")
     @Test
     public void hello() throws Exception {
         String hello = "hello";
@@ -58,6 +67,7 @@ public class HelloControllerTest {
         응답 본문의 내용을 검증한다.
 */
 
+    @WithMockUser(roles="USER")
     @Test
     public void helloDto() throws Exception {
         String name = "hello";

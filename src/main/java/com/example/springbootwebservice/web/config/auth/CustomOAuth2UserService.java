@@ -1,7 +1,9 @@
 package com.example.springbootwebservice.web.config.auth;
 
 
-import com.example.springbootwebservice.web.domain.user.Users;
+import com.example.springbootwebservice.web.config.auth.dto.OAuthAttributes;
+import com.example.springbootwebservice.web.config.auth.dto.SessionUser;
+import com.example.springbootwebservice.web.domain.user.User;
 import com.example.springbootwebservice.web.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -37,12 +39,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         바로 아래에서 이 클래스의 코드가 나오니 차례로 생성하시면 됩니다.
     SessionUser
         세션에 사용자 정보를 저장하기 위한 Dto 클래스입니다.
-        왜 User 클래스를 쓰지 않고 새로 만들어서 쓰는지 뒤이어서 상세하게 설명하겠습니다.
+        왜 User.java 클래스를 쓰지 않고 새로 만들어서 쓰는지 뒤이어서 상세하게 설명하겠습니다.
 */
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
+        OAuth2UserService delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -51,21 +53,21 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        Users users = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(users));
+        User user = saveOrUpdate(attributes);
+        httpSession.setAttribute("user", new SessionUser(user));
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(users.getRoleKey())),
+                Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
 
-    private Users saveOrUpdate(OAuthAttributes attributes) {
-        Users users = userRepository.findByEmail(attributes.getEmail())
+    private User saveOrUpdate(OAuthAttributes attributes) {
+        User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 .orElse(attributes.toEntity());
 
-        return userRepository.save(users);
+        return userRepository.save(user);
     }
 }

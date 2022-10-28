@@ -1,7 +1,7 @@
 package com.example.springbootwebservice.web;
 
 import com.example.springbootwebservice.web.config.auth.LoginUser;
-import com.example.springbootwebservice.web.config.auth.SessionUser;
+import com.example.springbootwebservice.web.config.auth.dto.SessionUser;
 import com.example.springbootwebservice.web.dto.PostsResponseDto;
 import com.example.springbootwebservice.web.service.posts.PostService;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller

@@ -4,9 +4,11 @@ import com.example.springbootwebservice.web.domain.posts.Posts;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class PostsSaveRequestDto {
     private String title;
     private String content;
